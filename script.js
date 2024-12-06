@@ -53,11 +53,14 @@ function writeDOM() {
                                     <p class="card-text">${game.year}</p>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                            <button type="button" class="btn btn-sm btn-outline-secondary view"
                                                     data-bs-toggle="modal" data-bs-target="#modal"
+                                                    data-id="${game.id}"
                                                     >View</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary"
-                                                    data-bs-toggle="modal" data-bs-target="#modal">Edit</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary edit"
+                                                    data-bs-toggle="modal" data-bs-target="#modal"
+                                                    data-id="${game.id}"
+                                                    >Edit</button>
                                         </div>
                                     </div>
                                 </div>
@@ -65,4 +68,36 @@ function writeDOM() {
                         </article>`
     })
 }
+
 writeDOM()
+
+const editButtons = document.querySelectorAll(".edit")
+editButtons.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+        editModal(e.target.getAttribute("data-id"))
+    })
+})
+
+const viewButtons = document.querySelectorAll(".view")
+viewButtons.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+        viewModal(e.target.getAttribute("data-id"))
+    })
+})
+
+function viewModal(gameId) {
+    const result = gamesList.findIndex((game) => game.id === parseInt(gameId))
+    const modalBody = `<img src="${gamesList[result].imageUrl}" alt="${gamesList[result].title}" class="img-fluid" />`
+    modifyModal(gamesList[result].title, modalBody)
+}
+
+function editModal(gameId) {
+    const result = gamesList.findIndex((game) => game.id === parseInt(gameId))
+    const modalBody = `<h4>Ajoutez un formulaire pour modifier le jeu ici</h4>`
+    modifyModal("Mode Edition", modalBody)
+}
+
+function modifyModal(modalTitle, modalBody) {
+    document.querySelector(".modal-title").textContent = modalTitle
+    document.querySelector(".modal-body").innerHTML = modalBody
+}
