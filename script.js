@@ -93,8 +93,11 @@ function viewModal(gameId) {
 
 function editModal(gameId) {
     const result = gamesList.findIndex((game) => game.id === parseInt(gameId))
-    const modalBody = `<h4>Ajoutez un formulaire pour modifier le jeu ici</h4>`
-    modifyModal("Mode Edition", modalBody)
+    fetch("./form.html").then((data) => {
+        data.text().then((form) => {
+            modifyModal("Mode Edition", form)
+        })
+    })
 }
 
 function modifyModal(modalTitle, modalBody) {
